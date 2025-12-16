@@ -1,19 +1,13 @@
 sources:
-  "0.7.10":
-    url: "https://github.com/getsentry/sentry-native/releases/download/0.7.10/sentry-native.zip"
-    sha256: "b7f7b5002cf7a4c614736ac294351da499db4f7fe155a452d527e69badc672bc"
-  "0.7.8":
-    url: "https://github.com/getsentry/sentry-native/releases/download/0.7.8/sentry-native.zip"
-    sha256: "7cfde453866edf4ae7991f4300fc08a5cb4e6d679d31011ff93b4cfe5e3e5d8a"
-  "0.7.6":
-    url: "https://github.com/getsentry/sentry-native/releases/download/0.7.6/sentry-native.zip"
-    sha256: "42180ad933a3a2bd86a1649ed0f1a41df20e783ce17c5cb1f86775f7caf06bc1"
-  "0.7.5":
-    url: "https://github.com/getsentry/sentry-native/releases/download/0.7.5/sentry-native.zip"
-    sha256: "d9f1b44753fae3e9462aa1e6fd3021cb0ff2f51c1a1fa02b34510e3bc311f429"
-  "0.6.6":
-    url: "https://github.com/getsentry/sentry-native/releases/download/0.6.6/sentry-native.zip"
-    sha256: "7a98467c0b2571380a3afc5e681cb13aa406a709529be12d74610b0015ccde0c"
-  "0.5.4":
-    url: "https://github.com/getsentry/sentry-native/releases/download/0.5.4/sentry-native.zip"
-    sha256: "e151bdc76894eb964ba4637361b2a96b7447fb04212053cf695fd7f72b636e4d"
+  "0.12.2":
+    url: "https://github.com/getsentry/sentry-native/releases/download/0.12.2/sentry-native.zip"
+    sha256: "d265d26e761dfdfc3ce3b2f1916c48da316fe2147981e23182ce933e4b0835b6"
+  "0.12.1":
+    url: "https://github.com/getsentry/sentry-native/releases/download/0.12.1/sentry-native.zip"
+    sha256: "ae2a37a1c5f86bedb3fbee6dd444e2f47f1ef002050b95ab8339607851944177"
+  "0.11.3":
+    url: "https://github.com/getsentry/sentry-native/releases/download/0.11.3/sentry-native.zip"
+    sha256: "6a4ccd2bf91320ca84169b322cbbfe5a0d13f0b4ee45bb4adf93bd1c4c59a08a"
+  "0.10.0":
+    url: "https://github.com/getsentry/sentry-native/releases/download/0.10.0/sentry-native.zip"
+    sha256: "fe9c40e0f677405f61a8bae1bfdbb9760a84b9594665d92781ed4e18e4b1da1f"

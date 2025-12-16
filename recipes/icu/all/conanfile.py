@@ -68,10 +68,6 @@ class ICUConan(ConanFile):
     def _enable_icu_tools(self):
         return self.settings.os not in ["iOS", "tvOS", "watchOS", "Emscripten"]
 
-    @property
-    def _with_unit_tests(self):
-        return not self.conf.get("tools.build:skip_test", default=True, check_type=bool)
-
     def export_sources(self):
         export_conandata_patches(self)
 
@@ -134,6 +130,8 @@ class ICUConan(ConanFile):
         if check_min_vs(self, "180", raise_invalid=False):
             tc.extra_cflags.append("-FS")
             tc.extra_cxxflags.append("-FS")
+        if Version(self.version) >= "75.1" and not self.settings.compiler.cppstd and is_msvc(self):
+            tc.extra_cxxflags.append(f"-std:c++{self._min_cppstd}")
         if not self.options.shared:
             tc.extra_defines.append("U_STATIC_IMPLEMENTATION")
         if is_apple_os(self):
@@ -149,7 +147,7 @@ class ICUConan(ConanFile):
             "--disable-layoutex",
             "--disable-layout",
             f"--enable-tools={yes_no(self._enable_icu_tools)}",
-            f"--enable-tests={yes_no(self._with_unit_tests)}",
+            "--disable-tests",
             "--disable-samples",
         ])
         if cross_building(self):
@@ -177,10 +175,7 @@ class ICUConan(ConanFile):
         if is_msvc(self):
             env = Environment()
             env.define("CC", "cl -nologo")
-            if Version(self.version) < "75.1":
-                env.define("CXX", "cl -nologo")
-            else:
-                env.define("CXX", "cl -nologo -std:c++17")
+            env.define("CXX", "cl -nologo")
             if cross_building(self):
                 env.define("icu_cv_host_frag", "mh-msys-msvc")
             env.vars(self).save_script("conanbuild_icu_msvc")
@@ -188,14 +183,12 @@ class ICUConan(ConanFile):
     def _patch_sources(self):
         apply_conandata_patches(self)
 
-        if not self._with_unit_tests:
-            # Prevent any call to python during configuration, it's only needed for unit tests
-            replace_in_file(
+        replace_in_file(
                 self,
                 os.path.join(self.source_folder, "source", "configure"),
                 "if test -z \"$PYTHON\"",
                 "if true",
-            )
+        )
 
         if self._settings_build.os == "Windows":
             # https://unicode-org.atlassian.net/projects/ICU/issues/ICU-20545
@@ -230,8 +223,6 @@ class ICUConan(ConanFile):
         autotools = Autotools(self)
         autotools.configure(build_script_folder=os.path.join(self.source_folder, "source"))
         autotools.make()
-        if self._with_unit_tests:
-            autotools.make(target="check")
 
     @property
     def _data_filename(self):
