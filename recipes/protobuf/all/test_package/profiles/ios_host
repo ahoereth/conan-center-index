@@ -1,0 +1,14 @@
+# Host profile: iOS device (cross-build target).
+# Use as profile:host when cross-building for iOS from macOS.
+# Requires Xcode or Command Line Tools. Adjust compiler.version to match your Xcode.
+
+[settings]
+os=iOS
+arch=armv8
+compiler=apple-clang
+compiler.version=15
+compiler.libcxx=libc++
+compiler.cppstd=17
+build_type=Release
+os.version=12.0
+os.sdk=iphoneos

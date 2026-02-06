@@ -1,0 +1,12 @@
+# Build profile: macOS (host machine running the build).
+# Use as profile:build when cross-building for iOS on a Mac.
+# Adjust arch to match your Mac: armv8 (Apple Silicon) or x86_64 (Intel).
+
+[settings]
+os=Macos
+arch=armv8
+compiler=apple-clang
+compiler.version=15
+compiler.libcxx=libc++
+compiler.cppstd=17
+build_type=Release

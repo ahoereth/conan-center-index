@@ -34,7 +34,10 @@ class TestPackageConan(ConanFile):
             bin_path = os.path.join(self.cpp.build.bindirs[0], "test_package")
             self.run(bin_path, env="conanrun")
 
-            # Invoke protoc in the same way CMake would
-            self.run(f"protoc --proto_path={self.source_folder} --cpp_out={self.build_folder} {self.source_folder}/addressbook.proto", env="conanrun")
-            assert os.path.exists(os.path.join(self.build_folder,"addressbook.pb.cc"))
-            assert os.path.exists(os.path.join(self.build_folder,"addressbook.pb.h"))
+        # Verify protoc works (native and cross-build: protoc runs on build machine)
+        self.run(
+            f"protoc --proto_path={self.source_folder} --cpp_out={self.build_folder} {self.source_folder}/addressbook.proto",
+            env="conanrun",
+        )
+        assert os.path.exists(os.path.join(self.build_folder, "addressbook.pb.cc"))
+        assert os.path.exists(os.path.join(self.build_folder, "addressbook.pb.h"))
