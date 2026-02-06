@@ -1,14 +1,13 @@
 from conan import ConanFile
 from conan.errors import ConanInvalidConfiguration
 from conan.tools.apple import is_apple_os
-from conan.tools.build import check_min_cppstd, cross_building
+from conan.tools.build import check_min_cppstd
 from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain, cmake_layout
 from conan.tools.files import copy, rename, get, apply_conandata_patches, export_conandata_patches, replace_in_file, rmdir, rm, save
 from conan.tools.microsoft import check_min_vs, is_msvc, is_msvc_static_runtime
 from conan.tools.scm import Version
 
 import os
-import shutil
 
 required_conan_version = ">=1.53"
 
@@ -116,8 +115,6 @@ class ProtobufConan(ConanFile):
     def build_requirements(self):
         if self._protobuf_release >= "30.1":
             self.tool_requires("cmake/[>=3.16 <4]")
-        if cross_building(self):
-            self.tool_requires(f"protobuf/{self.version}")
 
     @property
     def _cmake_install_base_path(self):
@@ -212,18 +209,6 @@ class ProtobufConan(ConanFile):
         rm(self, "protobuf-config*.cmake", folder=cmake_config_folder)
         rm(self, "protobuf-targets*.cmake", folder=cmake_config_folder)
         copy(self, "protobuf-conan-protoc-target.cmake", src=self.source_folder, dst=cmake_config_folder)
-
-        if cross_building(self):
-            # Protobuf is needed on build host to provide protoc as a tool
-            protoc_dst = os.path.join(self.package_folder, "bin")
-            protoc_name = "protoc" + (".exe" if self.settings_build.os == "Windows" else "")
-            build_pkg = self.dependencies.direct_build["protobuf"].package_folder
-            build_protoc = os.path.join(build_pkg, "bin", protoc_name)
-            dst_protoc = os.path.join(protoc_dst, protoc_name)
-            if os.path.exists(build_protoc) or os.path.islink(build_protoc):
-                if os.path.lexists(dst_protoc):
-                    os.unlink(dst_protoc)
-                shutil.copy2(build_protoc, dst_protoc, follow_symlinks=True)
 
         if not self.options.lite:
             rm(self, "libprotobuf-lite*", os.path.join(self.package_folder, "lib"))
